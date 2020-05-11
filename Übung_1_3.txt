@@ -1,0 +1,54 @@
+# upload the contents of this cell to our CMS as a text file
+
+# a relation subclass respecting key constraints:
+class KeyRelation(Relation):
+    # keys: names of the key attributes as a list
+    def __init__(self, name, schema, keys):
+        super().__init__(name, schema)
+        
+        # assert that the list of keys is subset-equal self-attributes:
+        assert set(keys) <= set(self.attributes)
+        # make sure that at least one key attribute is defined:
+        assert len(keys) >= 1
+        
+        # add your code here!
+        # ...
+        # initialize data structures that are required
+        # to check the key constraint for new tuples
+        self.key_index_list = []
+        self.key_list = set()
+        self.schema_ = schema
+        
+        for x in keys:
+            self.key_index_list.append(self.attributes.index(x))
+            
+        pass
+        
+    def add_tuple(self, tup):
+        # add your code here!
+        # ...
+        # check if there is a tuple with the same key in the relation
+        # only insert it using super().add_tuple(tup) if there is not.
+        # raise a ValueError if the key is already present.
+        # Make sure to perform your check in O(1) time!
+        
+        temp_list = []
+        for y in self.key_index_list:
+            temp_list.append(tup[y])
+        
+        cur_tuple = tuple(temp_list)
+        if cur_tuple in self.key_list:
+            raise ValueError("Key existiert bereits!")
+        else:
+            super().add_tuple(tup)
+            self.key_list.add(cur_tuple)
+            
+        pass
+        
+    def print_schema(tup):
+        super().print_schema()
+        
+        # add your code here!
+        # ...
+        # should also print the key attributes
+        pass
